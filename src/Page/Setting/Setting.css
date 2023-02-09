@@ -1,0 +1,9 @@
+.form-control{
+    padding:.4rem .3rem .4rem .3rem;
+    border-radius:5px;
+    border:1px solid gray;
+}
+.form-control:focus{
+    border:1px solid #ffa500 !important;
+    box-shadow: none !important;
+}
