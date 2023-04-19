@@ -147,4 +147,9 @@ Link {
   height: 87vh;
   overflow-y: auto;
 }
+
+.Button-style{
+  box-shadow: none !important;
+  border: 1px solid #ffa500 !important;
+}
 /*# sourceMappingURL=index.css.map */

@@ -14,6 +14,7 @@ import SellerProfile from "./Page/Seller/SellerProfile";
 import ShortsVideo from "./Page/Video/ShortsVideo";
 import Product from "./Page/Product.js/Product";
 import Category from "./Page/Category/Category";
+import SellerList from "./Page/Seller/SellerList";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/ShortsVideo" element={<ShortsVideo />}></Route>
             <Route path="/product" element={<Product />}></Route>
             <Route path="/category" element={<Category />}></Route>
+            <Route path="/sellerList" element={<SellerList />}></Route>
             <Route path="/logout" element={<Logout />}></Route>
           </Routes>
         </div>

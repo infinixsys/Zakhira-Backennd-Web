@@ -8,7 +8,7 @@ function Sidebar() {
     <React.Fragment>
       <div className="col-xl-2 shadow-sm main-sidebar-div">
         <header className="mx-4 py-2">
-          <h2>Zhakira</h2>
+          <h2>Zakhira</h2>
         </header>
         <body>
           <div className="sidebar">
@@ -36,8 +36,8 @@ function Sidebar() {
               </Link>
             </p>
            
-            <p className={`sidebar-li${ location.pathname === "/pendingSeller" ? "sidebar-link active" : "sidebar-link" }`} > <Link to="/pendingSeller" className="sidebar-link"> <i className={`bi bi-person mx-1 fs-5`}></i>Pending Seller </Link> </p>
-            <p
+            <p className={`sidebar-li${ location.pathname === "/pendingSeller" ? "sidebar-link active" : "sidebar-link" }`} > <Link to="/pendingSeller" className="sidebar-link"> <i className={`bi bi-person mx-1 fs-5`}></i> Verification </Link> </p>
+            {/* <p
               className={`sidebar-li${
                 location.pathname === "/Product"
                   ? "sidebar-link active"
@@ -47,8 +47,8 @@ function Sidebar() {
               <Link to="/Product" className="sidebar-link">
                 <i className="bi bi-bag mx-1 fs-5"></i> Product
               </Link>
-            </p>
-            <p
+            </p> */}
+            {/* <p
               className={`sidebar-li${
                 location.pathname === "/order"
                   ? "sidebar-link active"
@@ -58,7 +58,7 @@ function Sidebar() {
               <Link to="/order" className="sidebar-link">
                 <i className="bi bi-cart mx-1 fs-5"></i> Orders
               </Link>
-            </p>
+            </p> */}
             <p
               className={`sidebar-li${
                 location.pathname === "/category"
@@ -70,7 +70,7 @@ function Sidebar() {
                 <i className="bi bi-list-ul mx-1 fs-5"></i> Category
               </Link>
             </p>
-            <p
+            {/* <p
               className={`sidebar-li${
                 location.pathname === "/ShortsVideo"
                   ? "sidebar-link active"
@@ -80,7 +80,7 @@ function Sidebar() {
               <Link to="/ShortsVideo" className="sidebar-link">
                 <i className="bi bi-camera-video mx-1 fs-5"></i> Video
               </Link>
-            </p>
+            </p> */}
             <p
               className={`sidebar-li${
                 location.pathname === "/setting "

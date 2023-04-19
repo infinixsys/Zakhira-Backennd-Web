@@ -1,4 +1,4 @@
-import React from "react";
+import {React,useState} from "react";
 import { Link } from "react-router-dom";
 
 function PendingSeller() {
@@ -74,6 +74,13 @@ function PendingSeller() {
       OrderDetails: "subDashboard",
     },
   ];
+
+  const btn = document.getElementById("StatusUpdate");
+  const [color, setColor] = useState("warning")
+  const StatusUpdate = () =>{
+
+  }
+       
   return (
     <div className="d-flex justify-content-end px-5">
       <div className="col-lg-10">
@@ -89,7 +96,7 @@ function PendingSeller() {
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>
                     <th scope="col">Verification</th>
-                    <th scope="col">View</th>
+                    <th scope="col">User Details</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -107,15 +114,25 @@ function PendingSeller() {
                         <td>{email}</td>
                         <td>
                           {" "}
-                          <button className="btn btn-warning btn-sm">
+                          <button className={`btn btn-${color} btn-sm` } id={"StatusUpdate"} onClick={StatusUpdate}>
                             {"Pending"}
                           </button>
                         </td>
 
                         <td className="">
-                          <Link to={`/sellerProfile`}>
-                            <i className="bi bi-eye-fill fs-5 text-success mx-2"></i>{" "}
-                          </Link>
+                        <div className="dropdown">
+                            <button className="btn Button-style dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              View User
+                            </button>
+                            <ul className="dropdown-menu">
+                              <li><Link className="dropdown-item" to={"/sellerProfile"}>Profile</Link></li>
+                              <li><Link className="dropdown-item" to={"/product"}>Product</Link></li>
+                              <li><Link className="dropdown-item" to={"/order"}>Order</Link></li>
+                              <li><Link className="dropdown-item" to={"/sellerList"}>UserList</Link></li>
+                              <li><Link className="dropdown-item" to={"/ShortsVideo"}>Short</Link></li>
+
+                            </ul>
+                          </div>
                         </td>
                         <td>
                           {" "}

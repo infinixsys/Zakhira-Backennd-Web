@@ -90,6 +90,7 @@ function Unregister() {
                     <th scope="col">Phone Number</th>
                     <th scope="col">Email</th>
                     <th scope="col">Users Details</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -103,10 +104,22 @@ function Unregister() {
                         <td>{name}</td>
                         <td>{number}</td>
                         <td>{email}</td>
+                        <td>
+                        <div className="dropdown">
+                            <button className="btn Button-style dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              View User
+                            </button>
+                            <ul className="dropdown-menu">
+                              <li><Link className="dropdown-item" to={"/sellerProfile"}>Profile</Link></li>
+                              <li><Link className="dropdown-item" to={"/product"}>Product</Link></li>
+                              <li><Link className="dropdown-item" to={"/order"}>Order</Link></li>
+                              <li><Link className="dropdown-item" to={"/sellerList"}>UserList</Link></li>
+                              <li><Link className="dropdown-item" to={"/ShortsVideo"}>Short</Link></li>
+
+                            </ul>
+                          </div>
+                        </td>
                         <td className="">
-                          <Link to={`/sellerProfile`}>
-                            <i className="bi bi-eye-fill fs-5 text-success mx-2"></i>{" "}
-                          </Link>
                           <i className="bi bi-archive-fill fs-5 text-danger"></i>
                         </td>
                       </tr>
