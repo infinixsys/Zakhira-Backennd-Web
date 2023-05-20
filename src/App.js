@@ -5,17 +5,24 @@ import TopBar from "./Components/Topbar";
 import Dashboard from "./Page/Home/Dashboard";
 import Setting from "./Page/Setting/Setting";
 import SubDashBoard from "./Page/Home/SubDashBoard";
-import SingleList from './Page/Order/OrderList'
+import SingleList from './Page/Seller/OrderList'
 import RegisterUsers from "./Page/Seller/RegisterUsers";
 import Unregister from "./Page/Seller/Unregister";
 import PendingSeller from "./Page/Seller/PendingSeller";
 import Logout from "./Page/Logout/Logout";
 import SellerProfile from "./Page/Seller/SellerProfile";
 import ShortsVideo from "./Page/Video/ShortsVideo";
-import Product from "./Page/Product.js/Product";
+import Product from "./Page/Seller/Product";
 import Category from "./Page/Category/Category";
 import SellerList from "./Page/Seller/SellerList";
-
+import TaxSetting from "./Page/TexSetting/TaxSetting";
+import EditText from "./Page/TexSetting/EditText";
+import AddTaxSetting from "./Page/TexSetting/AddTaxSetting";
+import PrivateRoute from "./PrivateRoute";
+import SubCategory from "./Page/Category/SubCategory";
+import SingleProduct from "./Page/Seller/SingleProduct";
+import SingleOrder from "./Page/Seller/SingleOrder";
+import Profile from "./Components/Sidebar/Profile";
 
 function App() {
   return (
@@ -25,18 +32,27 @@ function App() {
           <TopBar />
           <Sidebar />
           <Routes>
-            <Route path="/" element={<Dashboard />}></Route>
-            <Route path="/subDashboard" element={<SubDashBoard />}></Route>
-            <Route path="/setting" element={<Setting />}></Route>
-            <Route path="/order" element={<SingleList />}></Route>
-            <Route path="/register" element={<RegisterUsers />}></Route>
-            <Route path="/unregister" element={<Unregister />}></Route>
-            <Route path="/pendingSeller" element={<PendingSeller />}></Route>
-            <Route path="/sellerProfile" element={<SellerProfile />}></Route>
-            <Route path="/ShortsVideo" element={<ShortsVideo />}></Route>
-            <Route path="/product" element={<Product />}></Route>
-            <Route path="/category" element={<Category />}></Route>
-            <Route path="/sellerList" element={<SellerList />}></Route>
+            <Route path="/" element={<PrivateRoute Component={Dashboard} />}></Route>
+            <Route path="/Dashboard" element={<PrivateRoute Component={Dashboard} />}></Route>
+            <Route path="/profile" element={<PrivateRoute Component={Profile} />}></Route>
+            <Route path="/subDashboard" element={<PrivateRoute Component={SubDashBoard} />}></Route>
+            <Route path="/setting" element={<PrivateRoute  Component={Setting}/>}></Route>
+            <Route path="/order/:id" element={<PrivateRoute Component={SingleList} />}></Route>
+            <Route path="/register" element={<PrivateRoute Component={RegisterUsers} />}></Route>
+            <Route path="/unregister" element={<PrivateRoute Component={Unregister} />}></Route>
+            <Route path="/pendingSeller" element={<PrivateRoute Component={PendingSeller} />}></Route>
+            <Route path="/sellerProfile/:id" element={<PrivateRoute Component={SellerProfile} />}></Route>
+            <Route path="/ShortsVideo/:id" element={<PrivateRoute Component={ShortsVideo} />}></Route>
+            <Route path="/product/:id" element={<PrivateRoute Component={Product}  />}></Route>
+            <Route path="/singleProduct/:id" element={<PrivateRoute Component={SingleProduct}  />}></Route>
+            <Route path="/SingleOrder/:id" element={<PrivateRoute Component={SingleOrder}  />}></Route>
+            <Route path="/category" element={<PrivateRoute Component={Category}  />}></Route>
+            <Route path="/sellerList" element={<PrivateRoute Component={SellerList}/>}></Route>
+            <Route path="/taxSetting" element={<PrivateRoute  Component={TaxSetting} />}></Route>
+            <Route path="/editText/:id" element={<PrivateRoute Component={EditText} />}></Route>
+            <Route path="/addTaxSetting" element={<PrivateRoute Component={AddTaxSetting}   />}></Route>
+            <Route path="/SubCategory/:id" element={<SubCategory />}></Route>
+
             <Route path="/logout" element={<Logout />}></Route>
           </Routes>
         </div>

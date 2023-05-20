@@ -1,80 +1,86 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-
-function Category() {
-  //  Get All Category
+function SubCategory() {
+  const { id } = useParams();
   const tokenData = sessionStorage.getItem("accessToken");
-
-  const headers = {
-    Authorization: `Bearer ${tokenData}`,
-    "Content-Type": "application/json",
-  };
-  const [Category, SetCategory] = useState([]);
-  const AllCategory = async () => {
+  // Get All SubCategory
+  const [SubCategory, SetSubCategory] = useState([]);
+  const AllSubCategory = async () => {
     try {
-      let AllCategoryData = await axios.get(
-        "http://35.154.124.131:3000/api/v1/admin/category",
+      let AllSubCategoryData = await axios.get(
+        `http://35.154.124.131:3000/api/v1/admin/subcategory/${id}`,
         {
-          headers
+          headers: {
+            Authorization: `Bearer ${tokenData}`,
+          },
         }
       );
-      SetCategory(AllCategoryData.data.results);
+      SetSubCategory(AllSubCategoryData.data.results);
     } catch (error) {
       console.log(error);
     }
   };
   useState(() => {
-    AllCategory();
+    AllSubCategory();
   }, []);
 
+  // add sub Category
   const [AddCategory, setAddCategory] = useState({
+    catId: id,
     name: "",
   });
   const onchangeCat = (e) => {
-    setAddCategory({ AddCategory, [e.target.name]: e.target.value });
+    setAddCategory({ catId: id, name: e.target.value });
   };
   const onsubmitData = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "http://35.154.124.131:3000/api/v1/admin/add_category",
+      const res = await axios.post(
+        `http://35.154.124.131:3000/api/v1/admin/add_subcategory/`,
         AddCategory,
         {
-          headers
+          headers: {
+            Authorization: `Bearer ${tokenData}`,
+          },
         }
       );
-      setAddCategory({ name: "" });
+      console.log(res.res)
+      setAddCategory({ name: "", catId: id, });
       window.location.reload(false);
     } catch (error) {
       console.log(error);
     }
   };
-  // edit category
-  const [EditCategory, setEditCategory] = useState({
-    catId: "",
-    name: "",
-  });
-  const { name } = EditCategory;
-  const HandleChange = (e) => {
-    setEditCategory({ catId: EditCategory.catId, name: e.target.value });
-  };
-  const Edit_Category = async () => {
-    try {
-      const apis = await axios.put(
-        "http://35.154.124.131:3000/api/v1/admin/edit_category/",
-        EditCategory,
-        { headers }
-      );
-      console.log(apis.res)
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
+  //Edit SubCategory
+  const [EditSubCategory, setEditSubCategory] = useState({
+    name: "",
+    catId: id,
+    subId: '',
+  });
+  const subHandleChange = async (e) => {
+    setEditSubCategory({ subId: EditSubCategory.subId, catId: SubCategory.id, name: e.target.value });
+  }
+  // call api in submit Data
+  const SubCatSubmit = async () => {
+    try {
+      await axios.put('http://35.154.124.131:3000/api/v1/admin/edit_subcategory/', EditSubCategory, {
+        headers: {
+          Authorization: `Bearer ${tokenData}`,
+        },
+      });
+      // console.log()
+    } catch (error) {
+
+    }
+  }
+  // active inactive
   const [NewState, SetNewState] = useState();
+  const [subId,] = useState();
   const [Status, SetStatus] = useState({
     catId: NewState,
+    subId: subId,
     status: false,
     reason: "",
   });
@@ -109,19 +115,20 @@ function Category() {
             <form action="" onSubmit={onsubmitData}>
               <div className="col-lg-5">
                 <div className="">
-                  <label htmlFor="">Category Name</label>
+                  <label htmlFor="">SubCategory Name</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Enter Category Name"
+                    placeholder="Enter Sub Category Name"
                     value={AddCategory.name}
                     name="name"
                     onChange={onchangeCat}
                   />
                 </div>
               </div>
+
               <div className="col-lg-3 my-3">
-                <button className="btn-style">Add Category</button>
+                <button className="btn-style">Update</button>
               </div>
             </form>
           </div>
@@ -134,49 +141,42 @@ function Category() {
                   <thead>
                     <tr className="table-success">
                       <th scope="col">S.no</th>
+                      <th scope="col">SubCategory Name</th>
                       <th scope="col">Category Name</th>
-                      <th scope="col">Sub Category</th>
-                      <th scope="col">Status</th>
                       <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Category.map((data, index) => {
-                      const { name, id, status } = data
-                      return (
-                        <tr key={id}>
-                          <th scope="row">{index + 1}</th>
-                          <td>{name}</td>
-                          <td className="">
-                            <Link to={`/SubCategory/${id}`}>
-                              <i className="bi bi-eye fs-5 text-success mx-2"></i>{" "}
-                            </Link>
-                          </td>
-                          <td>
-                            <button
-                              className={
-                                status
-                                  ? "btn btn-sm btn-success"
-                                  : "btn btn-sm btn-danger"
-                              }
-                              data-bs-toggle="modal"
-                              data-bs-target="#exampleModal1"
-                              onClick={() => SetStatus({ catId: id, status: !status })}
-                            >
-                              {status ? "active" : "Inactive"}
+                    {
+                      SubCategory.map((data, index) => {
+                        const { name, id, status, } = data
+                        return (
+                          <tr key={id}>
+                            <th scope="row">{index + 1}</th>
+                            <td>{name}</td>
+                            <td>
+                              <button
+                                className={
+                                  status
+                                    ? "btn btn-sm btn-success"
+                                    : "btn btn-sm btn-danger"
+                                }
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal1"
+                                onClick={() => SetStatus({ catId: id, status: !status })}
+                              >
+                                {status ? "active" : "Inactive"}
 
-                            </button>
-                          </td>
-
-                          <td className="">
-                            {/* <Link to={`/sellerProfile`}> */}
-                            <i className="bi bi-pencil-square fs-5 text-warning mx-2" style={{ cursor: "pointer" }} data-bs-toggle="modal"
-                              data-bs-target="#exampleModal" onClick={() => setEditCategory({ catId: id })} ></i>{" "}
-                            {/* </Link> */}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                              </button>
+                            </td>
+                            <td className="">
+                              <i className="bi bi-pencil-square fs-5 text-warning mx-2" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal" onClick={() => setEditSubCategory({ subId: id })}></i>{" "}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    }
                   </tbody>
                 </table>
               </div>
@@ -184,6 +184,7 @@ function Category() {
           </div>
         </div>
       </div>
+      {/* edit */}
       <div
         class="modal fade"
         id="exampleModal"
@@ -211,9 +212,9 @@ function Category() {
                   className="form-control"
                   type="text"
                   placeholder="Enter New Name"
-                  onChange={HandleChange}
+                  onChange={subHandleChange}
                   name="name"
-                  value={name}
+                  value={EditSubCategory.name}
                 />
               </div>
 
@@ -230,7 +231,7 @@ function Category() {
                 type="button"
                 class="btn btn-success"
                 data-bs-dismiss="modal"
-                onClick={Edit_Category}
+                onClick={SubCatSubmit}
               >
                 Save changes
               </button>
@@ -305,8 +306,7 @@ function Category() {
         </div>
       </div>
     </>
-
   );
 }
 
-export default Category;
+export default SubCategory

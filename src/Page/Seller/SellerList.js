@@ -1,15 +1,31 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import Search from './Search';
+import Sort from './Sort';
+import DropDown from './DropDown';
 
 function SellerList() {
     const Products = [];
   return (
     <div className="d-flex justify-content-end px-5">
       <div className="col-lg-10">
+      <div className="row justify-content-between my-2">
+      <h5>UserList</h5>
+          <div className="col-lg-4">
+            {" "}
+            <Search/>
+          </div>
+          <div className="col-lg-4">
+            <Sort />
+
+          </div>
+          <div className="col-lg-4 text-end">
+            <DropDown/>
+          </div>
+        </div>
         <div className="row">
           <div style={{ overflowX: "scroll" }}>
             <div className="col-lg-12 my-3">
-              <h5>UserList</h5>
               <table className="table">
                 <thead>
                   <tr className="table-success">

@@ -1,5 +1,9 @@
 import {React,useState} from "react";
 import { Link } from "react-router-dom";
+import DropDown from "./DropDown";
+import Search from './Search';
+import Sort from './Sort';
+
 
 function PendingSeller() {
   const PendingSeller = [
@@ -83,7 +87,17 @@ function PendingSeller() {
        
   return (
     <div className="d-flex justify-content-end px-5">
+
       <div className="col-lg-10">
+      <div className="row justify-content-between my-2">
+          <div className="col-lg-4">
+            {" "}
+            <Search/>
+          </div>
+          <div className="col-lg-4">
+            <Sort />
+          </div>
+        </div>
         <div className="row">
           <div style={{ overflowX: "scroll" }}>
             <div className="col-lg-12">
@@ -120,19 +134,7 @@ function PendingSeller() {
                         </td>
 
                         <td className="">
-                        <div className="dropdown">
-                            <button className="btn Button-style dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              View User
-                            </button>
-                            <ul className="dropdown-menu">
-                              <li><Link className="dropdown-item" to={"/sellerProfile"}>Profile</Link></li>
-                              <li><Link className="dropdown-item" to={"/product"}>Product</Link></li>
-                              <li><Link className="dropdown-item" to={"/order"}>Order</Link></li>
-                              <li><Link className="dropdown-item" to={"/sellerList"}>UserList</Link></li>
-                              <li><Link className="dropdown-item" to={"/ShortsVideo"}>Short</Link></li>
-
-                            </ul>
-                          </div>
+                        <DropDown/>
                         </td>
                         <td>
                           {" "}

@@ -1,83 +1,69 @@
-import { React, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import DropDown from "./DropDown";
+import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Search from "./Search";
 import Sort from "./Sort";
+import DropDown from "./DropDown";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-function RegisterUsers() {
+function Product() {
   const tokenData = sessionStorage.getItem("accessToken");
-
-  let location = useLocation();
-  useEffect(() => {}, [location]);
-  const registerBtn = {
-    padding: "5px 15px 5px 15px",
-    backgroundColor: "white",
-    display: "inline-block",
-    borderRadius: "5px",
-    cursor: "pointer",
-    marginRight: "10px",
-    fontSize: "16px",
+  const headers = {
+    Authorization: `Bearer ${tokenData}`,
+    "Content-Type": "application/json",
   };
-
-  const [RegisterData, SetRegisterData] = useState([]);
-  let UnUser = async () => {
-    const UnUserData = await axios.get(
-      "http://35.154.124.131:3000/api/v1/admin//register_seller",
+  const { id } = useParams();
+  const [product, setProduct] = useState([]);
+  let sellerProduct = async () => {
+    const productData = await axios.get(
+      `http://35.154.124.131:3000/api/v1/admin/seller/${id}/product?limit=5&page=0`,
       {
-        headers: {
-          Authorization: `Bearer ${tokenData}`,
-          "Content-Type": "application/json",
-        },
+        headers,
       }
     );
     try {
-      SetRegisterData(UnUserData.data.results);
-      console.log(RegisterData.data.results);
+      setProduct(productData.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // patch api for hide and show project
+  const [sellerID,] = useState([]);
+  const [productId,] = useState([]);
+  const [ProductVerification, setProductVerification] = useState({
+    sellerId: sellerID,
+    productId: productId,
+    status: false,
+    reason: "",
+  });
+  const { status, reason } = ProductVerification;
+  const HandleChange = (e) => {
+    setProductVerification({
+      ...ProductVerification,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const product_verification = async () => {
+    try {
+      await axios.patch(
+        "http://35.154.124.131:3000/api/v1/admin/verify_product/",
+        ProductVerification,
+        { headers }
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
-
-  const [NewState,SetNewState] = useState();
-  const [Status, SetStatus] = useState({
-    id: NewState,
-    status:false,
-    reason: "",
-  });
-  const {status, reason } = Status;
-
-  const OnStatusChange = (e) => {
-    SetStatus({ ...Status, [e.target.name]: e.target.value });
-  };
-
-  const StatusData = async () => {
-    const headers = {
-      Authorization: `Bearer ${tokenData}`,
-    };
-    let StatusApi = await axios.patch(
-      `http://35.154.124.131:3000/api/v1/admin/seller/`,
-      Status,
-      {
-        headers,
-      }
-    );
-    SetStatus({
-      status: "",
-      reason: "",
-    });
-  };
-
   useEffect(() => {
-    UnUser();
+    sellerProduct();
   }, []);
-   
   return (
     <>
       <div className="d-flex justify-content-end px-5">
         <div className="col-lg-10">
           <div className="row justify-content-between my-2">
+            <h5>Total Product</h5>
             <div className="col-lg-4">
               {" "}
               <Search />
@@ -85,48 +71,49 @@ function RegisterUsers() {
             <div className="col-lg-4">
               <Sort />
             </div>
+            <div className="col-lg-4 text-end">
+              <DropDown sellerId={id} />
+            </div>
           </div>
           <div className="row">
             <div style={{ overflowX: "scroll" }}>
-              <div className="col-lg-12">
-                <Link to="/register">
-                  <h5 style={registerBtn} className="shadow-sm">
-                    Register Seller
-                  </h5>
-                </Link>
-                <Link
-                  to="/unregister"
-                  className={`${
-                    location.pathname === "/unregister" ? "color" : ""
-                  }`}
-                >
-                  <h5 style={registerBtn} className="shadow-sm">
-                    Unregister Seller
-                  </h5>
-                </Link>
+              <div className="col-lg-12 my-3">
                 <table className="table">
                   <thead>
                     <tr className="table-success">
                       <th scope="col">S.no</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Phone Number</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">status</th>
-                      <th scope="col">Users Details</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Offer Price</th>
+                      <th scope="col">Moq</th>
+                      <th scope="col">upload Date</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {RegisterData.map((Users, index) => {
-                      const { firstName, number, email, sellerId, status } =
-                        Users;
+                    {product.map((Products, index) => {
+                      const {
+                        id,
+                        sellerId,
+                        productName,
+                        price,
+                        offerPrice,
+                        moq,
+                        uploadDate,
+                        status,
+                        productId,
+                      } = Products;
                       return (
                         <tr>
-                          <th scope="row" key={sellerId}>
+                          <th scope="row" key={id}>
                             {index + 1}
                           </th>
-                          <td>{firstName}</td>
-                          <td>{number}</td>
-                          <td>{email}</td>
+                          <td>{productName}</td>
+                          <td>{price}</td>
+                          <td>{offerPrice}</td>
+                          <td>{moq}</td>
+                          <td>{uploadDate}</td>
                           <td>
                             <button
                               className={
@@ -136,18 +123,22 @@ function RegisterUsers() {
                               }
                               data-bs-toggle="modal"
                               data-bs-target="#exampleModal"
-                              onClick={()=>SetStatus({id:sellerId,status:!status})}
+                              onClick={() =>
+                                setProductVerification({
+                                  sellerId: sellerId,
+                                  productId: productId,
+                                  status: !status,
+                                })
+                              }
                             >
-                              {status ? "active" : "Inactive"}
-                              
+                              {status ? "Hide" : "UnHide"}
                             </button>
                           </td>
-                          <td>
-                            <DropDown sellerId={sellerId} />
+                          <td className="">
+                            <Link to={`/singleProduct/${productId}?sellId=${sellerId}`}>
+                              <i className="bi bi-eye-fill fs-5 text-success mx-2"></i>{" "}
+                            </Link>
                           </td>
-                          {/* <td className="">
-                          <i className="bi bi-archive-fill fs-5 text-danger"></i>
-                        </td> */}
                         </tr>
                       );
                     })}
@@ -186,7 +177,7 @@ function RegisterUsers() {
                   className="form-control"
                   type="text"
                   placeholder="Reason"
-                  onChange={OnStatusChange}
+                  onChange={HandleChange}
                   name="reason"
                   value={reason}
                 />
@@ -195,7 +186,7 @@ function RegisterUsers() {
                 <label htmlFor="">Status</label>
                 <select
                   className="form-control"
-                  onChange={OnStatusChange}
+                  onChange={HandleChange}
                   name="status"
                   value={status}
                 >
@@ -216,7 +207,7 @@ function RegisterUsers() {
                 type="button"
                 class="btn btn-success"
                 data-bs-dismiss="modal"
-                onClick={StatusData}
+                onClick={product_verification}
               >
                 Save changes
               </button>
@@ -228,4 +219,4 @@ function RegisterUsers() {
   );
 }
 
-export default RegisterUsers;
+export default Product;

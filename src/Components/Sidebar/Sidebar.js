@@ -12,18 +12,18 @@ function Sidebar() {
         </header>
         <body>
           <div className="sidebar">
+            <p className={`sidebar-li${ location.pathname === "/" ? "sidebar-link active" : "sidebar-link" }`} > <Link to="" className={`sidebar-link`}> <i className="bi bi-grid mx-1 fs-5"></i> Dashboard </Link> </p>
             <p
               className={`sidebar-li${
-                location.pathname === "/"
+                location.pathname === "/taxSetting" 
                   ? "sidebar-link active"
                   : "sidebar-link"
               }`}
             >
-              <Link to="" className={`sidebar-link`}>
-                <i className="bi bi-grid mx-1 fs-5"></i> Dashboard
+              <Link to="/taxSetting" className="sidebar-link">
+                <i className="bi bi-currency-rupee mx-1 fs-5"></i> TaxSetting
               </Link>
             </p>
-            
             <p
               className={`sidebar-li${
                 location.pathname === "/register"
@@ -72,6 +72,17 @@ function Sidebar() {
             </p>
             {/* <p
               className={`sidebar-li${
+                location.pathname === "/SubCategory"
+                  ? "sidebar-link active"
+                  : "sidebar-link"
+              }`}
+            >
+              <Link to="/SubCategory" className="sidebar-link">
+                <i className="bi bi-list-ul mx-1 fs-5"></i>SubCategory
+              </Link>
+            </p> */}
+            {/* <p
+              className={`sidebar-li${
                 location.pathname === "/ShortsVideo"
                   ? "sidebar-link active"
                   : "sidebar-link"
@@ -83,13 +94,13 @@ function Sidebar() {
             </p> */}
             <p
               className={`sidebar-li${
-                location.pathname === "/setting "
+                location.pathname === "/profile"
                   ? "sidebar-link active"
                   : "sidebar-link"
               }`}
             >
-              <Link to="/setting" className="sidebar-link">
-                <i className={`bi bi-gear mx-1 fs-5`}></i> Setting
+              <Link to="/profile" className="sidebar-link">
+                <i className={`bi bi-gear mx-1 fs-5`}></i> Profile
               </Link>
             </p>
            
